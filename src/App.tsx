@@ -1,17 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import { Card } from 'antd';
-import { Login } from './components/Login/Login';
+import React from "react";
+import "./App.css";
+import { useRoutes } from "react-router-dom";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+import { ChooseClassPage } from "./pages/ChooseClassPage";
+import { CreateClassPage } from "./pages/CreateClassPage";
 
 function App() {
-  return (
-    <div className="App">
-      <Card>
-        <Login />
-      </Card>
-    </div>
-  );
+  const routes = useRoutes([
+    { path: "/", element: <LoginPage /> },
+    { path: "/login", element: <LoginPage /> },
+    { path: "/register", element: <RegisterPage /> },
+    { path: "/class/choose", element: <ChooseClassPage /> },
+    { path: "/class/create", element: <CreateClassPage /> },
+  ]);
+
+  return routes;
 }
 
 export default App;

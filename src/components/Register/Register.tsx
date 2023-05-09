@@ -1,20 +1,21 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input } from "antd";
 import React from "react";
-import "./Login.css";
-import { login } from "../../api/user";
+import "./Register.css";
+import { createUser } from "../../api/user";
 import { useNavigate } from "react-router-dom";
 
 type FormFields = {
   email: string;
+  name: string;
   password: string;
 };
 
-export const Login = () => {
+export const Register = () => {
   const navigate = useNavigate();
 
   const handleSubmit = (values: FormFields) => {
-    login(values.email, values.password).then((token) => {
+    createUser(values.email, values.name, values.password).then((token) => {
       if (token) {
         localStorage.setItem("userToken", token);
         navigate("/class/choose");
@@ -24,15 +25,21 @@ export const Login = () => {
 
   return (
     <div>
-      <h2>Entrar na plataforma</h2>
+      <h2>Cadastrar na plataforma</h2>
       <div style={{ marginBottom: "24px" }}>
-        É novo na plataforma? <a href="/register">Cadastre-se agora.</a>
+        Já possui conta? <a href="/login">Faça login.</a>
       </div>
-      <Form onFinish={handleSubmit} className="login-form">
+      <Form onFinish={handleSubmit} className="register-form">
         <Form.Item required name="email">
           <Input
-            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+            prefix={<MailOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
             placeholder="E-mail"
+          />
+        </Form.Item>
+        <Form.Item required name="name">
+          <Input
+            prefix={<UserOutlined style={{ color: "rgba(0,0,0,.25)" }} />}
+            placeholder="Nome"
           />
         </Form.Item>
         <Form.Item required name="password">
@@ -46,7 +53,7 @@ export const Login = () => {
           <Button
             type="primary"
             htmlType="submit"
-            className="login-form-button"
+            className="register-form-button"
           >
             Entrar
           </Button>
