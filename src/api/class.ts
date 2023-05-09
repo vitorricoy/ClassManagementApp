@@ -25,3 +25,23 @@ export const getClasses = async () => {
   }
   return data;
 };
+
+export const createClass = async (formData: any) => {
+  formData.append("token", localStorage.getItem("userToken"));
+  const { data, status } = await axios.post<Class>(
+    BASE_URL + "class",
+    formData,
+    {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "multipart/form-data",
+      },
+    }
+  );
+
+  if (status !== 200 || !data) {
+    notification.error({ message: "Erro ao criar turma." });
+    return;
+  }
+  return data;
+};

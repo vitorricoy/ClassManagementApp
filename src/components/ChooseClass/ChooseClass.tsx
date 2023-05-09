@@ -14,6 +14,11 @@ export const ChooseClassWithClass = ({
 }) => {
   const navigate = useNavigate();
 
+  const chooseClass = (code: number) => {
+    localStorage.setItem("classCode", code.toString());
+    navigate("/dashboard");
+  };
+
   return (
     <div className="cardContainer">
       <div style={{ textAlign: "center" }}>
@@ -21,7 +26,11 @@ export const ChooseClassWithClass = ({
       </div>
       <Card className="borderInBetween clickable">
         {userClasses.map((item) => (
-          <div className="list-item">
+          <div
+            key={item.code}
+            className="list-item"
+            onClick={() => chooseClass(item.code)}
+          >
             {item.name} <RightOutlined />
           </div>
         ))}
@@ -65,22 +74,7 @@ export const ChooseClass = () => {
     getClasses().then((classes) => {
       setLoading(false);
       if (classes) {
-        setClasses(classes.concat([
-          {
-            code: 1,
-            name: 'Turma 12 (07/2022)',
-            userCode: 1,
-          },
-          {
-            code: 1,
-            name: 'Turma 13 (10/2022)',
-            userCode: 1,
-          }, {
-            code: 1,
-            name: 'Turma 14 (02/2022)',
-            userCode: 1,
-          }
-        ]));
+        setClasses(classes);
       }
     });
   }, []);
