@@ -1,7 +1,14 @@
 import React from "react";
 import "./NavigationMenu.css";
-import { Menu, MenuProps } from "antd";
-import { MailOutlined } from "@ant-design/icons";
+import { Button, Menu } from "antd";
+import {
+  CalendarOutlined,
+  CheckSquareOutlined,
+  PercentageOutlined,
+  RiseOutlined,
+  SendOutlined,
+  TableOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
 export const NavigationMenu = () => {
@@ -11,63 +18,60 @@ export const NavigationMenu = () => {
     const pathname = window.location.pathname;
     const item = pathname.slice(11);
     if (item === "") {
-      return "item1";
+      return "deliveries";
     }
     return item;
   };
 
-  const [current, setCurrent] = React.useState<string>(getCurrentItem());
-
-  const items: MenuProps["items"] = [
-    {
-      label: "Entregas",
-      key: "deliveries",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/deliveries"),
-    },
-    {
-      label: "Notas",
-      key: "grades",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/grades"),
-    },
-    {
-      label: "Módulos",
-      key: "modules",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/modules"),
-    },
-    {
-      label: "Progresso no curso",
-      key: "progress",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/progress"),
-    },
-    {
-      label: "Frequência no curso",
-      key: "frequency",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/frequency"),
-    },
-    {
-      label: "Estimativa de aprovação",
-      key: "approval",
-      icon: <MailOutlined />,
-      onClick: () => navigate("/dashboard/approval"),
-    },
-  ];
-
-  const onClick: MenuProps["onClick"] = (e) => {
-    console.log("click ", e);
-    setCurrent(e.key);
-  };
-
   return (
-    <Menu
-      onClick={onClick}
-      selectedKeys={[current]}
-      mode="horizontal"
-      items={items}
-    />
+    <Menu selectedKeys={[getCurrentItem()]} mode="horizontal" className="menu">
+      <Menu.Item
+        key="deliveries"
+        icon={<SendOutlined />}
+        onClick={() => navigate("/dashboard/deliveries")}
+      >
+        Entregas
+      </Menu.Item>
+      <Menu.Item
+        key="grades"
+        icon={<CheckSquareOutlined />}
+        onClick={() => navigate("/dashboard/grades")}
+      >
+        Notas
+      </Menu.Item>
+      <Menu.Item
+        key="modules"
+        icon={<TableOutlined />}
+        onClick={() => navigate("/dashboard/modules")}
+      >
+        Módulos
+      </Menu.Item>
+      <Menu.Item
+        key="progress"
+        icon={<RiseOutlined />}
+        onClick={() => navigate("/dashboard/progress")}
+      >
+        Progresso no curso
+      </Menu.Item>
+      <Menu.Item
+        key="frequency"
+        icon={<CalendarOutlined />}
+        onClick={() => navigate("/dashboard/frequency")}
+      >
+        Frequência no curso
+      </Menu.Item>
+      <Menu.Item
+        key="approval"
+        icon={<PercentageOutlined />}
+        onClick={() => navigate("/dashboard/approval")}
+      >
+        Estimativa de aprovação
+      </Menu.Item>
+      <Menu.Item className="logout">
+        <Button type="link" size="small" onClick={() => navigate("/")}>
+          Sair
+        </Button>
+      </Menu.Item>
+    </Menu>
   );
 };

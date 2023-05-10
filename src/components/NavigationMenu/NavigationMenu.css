@@ -1,0 +1,20 @@
+:where(.css-dev-only-do-not-override-yp8pcc).ant-menu-light.ant-menu-horizontal
+  > .logout::after,
+:where(.css-dev-only-do-not-override-yp8pcc).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .logout::after,
+:where(.css-dev-only-do-not-override-yp8pcc).ant-menu-light.ant-menu-horizontal
+  > .ant-menu-submenu::after,
+:where(.css-dev-only-do-not-override-yp8pcc).ant-menu-light
+  > .ant-menu.ant-menu-horizontal
+  > .ant-menu-submenu::after {
+  border-bottom: 0px;
+}
+
+.logout {
+  float: right;
+}
+
+:where(.css-dev-only-do-not-override-yp8pcc).ant-menu-overflow {
+  display: block;
+}
