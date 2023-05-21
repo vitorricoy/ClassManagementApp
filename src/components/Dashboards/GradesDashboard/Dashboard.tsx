@@ -29,20 +29,20 @@ const GradeHeatmapPlot = () => {
 
     return emailsCont.sort((a, b) => a[1] - b[1]).map(v => v[0]);
   };
-  const getMaterials = () => gradeHeatmapData ? Object.keys(gradeHeatmapData[getEmails()[0]]) : [];
+  const getGrades = () => gradeHeatmapData ? Object.keys(gradeHeatmapData[getEmails()[0]]) : [];
 
   const getZValue = () => {
     const emails = getEmails();
-    const materials = getMaterials();
-    const zValue: number[][] = new Array(emails.length).fill(0).map((o, i) => new Array(materials.length).fill(0));
+    const grades = getGrades();
+    const zValue: number[][] = new Array(emails.length).fill(0).map((o, i) => new Array(grades.length).fill(0));
 
     if (!gradeHeatmapData) {
       return;
     }
 
-    for (let i = 0; i < materials.length; i++) {
+    for (let i = 0; i < grades.length; i++) {
       for (let j = 0; j < emails.length; j++) {
-        const grade = gradeHeatmapData[emails[j]][materials[i]];
+        const grade = gradeHeatmapData[emails[j]][grades[i]];
         zValue[j][i] = grade;
       }
     }
@@ -64,7 +64,7 @@ const GradeHeatmapPlot = () => {
       height: getEmails().length * 20,
     } as Pick<Plotly.Layout, 'annotations' | 'title' | 'margin' | 'width' | 'height'>;
 
-    const xValues = getMaterials();
+    const xValues = getGrades();
     const yValues = getEmails();
     const zValues = getZValue();
     if (zValues) {
@@ -101,7 +101,7 @@ const GradeHeatmapPlot = () => {
         },
       ]}
       layout={layout}
-    />
+    />;
   };
 
   return gradeHeatmapData ? getPlot() : <div className="spinner"><Spin /></div>;
