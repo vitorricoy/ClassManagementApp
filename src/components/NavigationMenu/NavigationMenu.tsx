@@ -67,7 +67,7 @@ export const NavigationMenu = () => {
       >
         Estimativa de aprovação
       </Menu.Item>
-      <Menu.Item className="logout">
+      <Menu.Item className="logout" key="logout">
         <Button type="link" size="small" onClick={() => navigate("/")}>
           Sair
         </Button>
