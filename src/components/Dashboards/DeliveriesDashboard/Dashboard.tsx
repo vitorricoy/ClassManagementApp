@@ -2,7 +2,7 @@ import React from "react";
 import "./Dashboard.css";
 import { NavigationMenu } from "../../NavigationMenu/NavigationMenu";
 import Plot from 'react-plotly.js';
-import { DeliveryHeatmap, getDeliveryHeatmap } from "../../../api/delivery";
+import { DeliveryActivityCount, DeliveryHeatmap, DeliveryStudentCount, getDeliveryActivityCount, getDeliveryHeatmap, getDeliveryStudentCount } from "../../../api/delivery";
 import { Datum } from "plotly.js";
 import { Menu, Spin } from "antd";
 
@@ -65,7 +65,7 @@ const DeliveryHeatmapPlot = () => {
         },
       ]}
       layout={{
-        title: 'Entrega de atividades por aluno',
+        title: 'Entregas por aluno e atividade',
         margin: {
           t: 50,
           b: 180,
@@ -83,6 +83,147 @@ const DeliveryHeatmapPlot = () => {
   return deliveryHeatmapData ? getPlot() : <div className="spinner"><Spin /></div>;
 };
 
+const DeliveryStudentNumberPlot = () => {
+  const [deliveryStudentCount, setDeliveryStudentCount] = React.useState<DeliveryStudentCount[]>();
+
+  React.useEffect(() => {
+    if (!deliveryStudentCount) {
+      getDeliveryStudentCount().then((data) => {
+        if (data) {
+          setDeliveryStudentCount(data);
+        }
+      });
+    }
+  });
+
+  const getPlot = () => {
+    return <Plot
+      style={{ paddingTop: '20px' }}
+      data={[
+        {
+          x: deliveryStudentCount?.map(v => v.email),
+          y: deliveryStudentCount?.map(v => v.count),
+          type: 'bar',
+        },
+      ]}
+      layout={{
+        title: 'Número de entregas por aluno',
+        margin: {
+          t: 50,
+          b: 250,
+          l: 50,
+          r: 50,
+          pad: 0,
+        },
+        width: window.innerWidth - 20,
+        height: window.innerHeight - 200,
+      }
+      }
+    />
+  };
+
+  return deliveryStudentCount ? getPlot() : <div className="spinner"><Spin /></div>;
+};
+
+const DeliveryHistogramPlot = () => {
+  const [deliveryStudentCount, setDeliveryStudentCount] = React.useState<number[]>();
+
+  React.useEffect(() => {
+    if (!deliveryStudentCount) {
+      getDeliveryStudentCount().then((data) => {
+        if (data) {
+          setDeliveryStudentCount(data.map(v => v.count));
+        }
+      });
+    }
+  });
+
+  const getPlot = () => {
+    const maxDelivery = deliveryStudentCount ? Math.max(...deliveryStudentCount) : 0;
+    return <Plot
+      style={{ paddingTop: '20px' }}
+      data={[
+        {
+          x: deliveryStudentCount,
+          type: 'histogram',
+          xbins: {
+            start: 0,
+            end: maxDelivery,
+            size: 1,
+          }
+        },
+      ]}
+      layout={{
+        title: 'Histograma da média de entregas por aluno',
+        bargap: 0.1,
+        margin: {
+          t: 50,
+          b: 50,
+          l: 50,
+          r: 50,
+          pad: 0,
+        },
+        xaxis: {
+          nticks: maxDelivery,
+          tick0: 0.4999,
+          dtick: 1,
+          tickformat: "d",
+        },
+        width: window.innerWidth - 20,
+        height: window.innerHeight - 200,
+      }
+      }
+    />
+  };
+
+  return deliveryStudentCount ? getPlot() : <div className="spinner"><Spin /></div>;
+};
+
+const DeliveryActivityNumberPlot = () => {
+  const [deliveryActivityCount, setDeliveryActivityCount] = React.useState<DeliveryActivityCount[]>();
+
+  React.useEffect(() => {
+    if (!deliveryActivityCount) {
+      getDeliveryActivityCount().then((data) => {
+        if (data) {
+          setDeliveryActivityCount(data);
+        }
+      });
+    }
+  });
+
+  const getPlot = () => {
+    return <Plot
+      style={{ paddingTop: '20px' }}
+      data={[
+        {
+          x: deliveryActivityCount?.map(v => v.activity),
+          y: deliveryActivityCount?.map(v => v.count),
+          type: 'bar',
+        },
+      ]}
+      layout={{
+        title: 'Número de entregas por atividade',
+        margin: {
+          t: 50,
+          b: 300,
+          l: 50,
+          r: 50,
+          pad: 0,
+        },
+        width: window.innerWidth - 20,
+        height: window.innerHeight - 150,
+        xaxis: {
+          tickangle: 90,
+        }
+      }
+      }
+    />
+  };
+
+  return deliveryActivityCount ? getPlot() : <div className="spinner"><Spin /></div>;
+};
+
 const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: string; setCurrentItem: (v: string) => void; }) => {
   return (
     <Menu
@@ -97,9 +238,9 @@ const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: strin
         Entregas por aluno e atividade
       </Menu.Item>
       <Menu.Item
-        key="delivery_mean"
+        key="deliveries_student"
       >
-        Média de entregas por aluno
+        Número de entregas por aluno
       </Menu.Item>
       <Menu.Item
         key="histogram"
@@ -107,9 +248,9 @@ const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: strin
         Histograma da média de entregas por aluno
       </Menu.Item>
       <Menu.Item
-        key="number_deliveries"
+        key="deliveries_activity"
       >
-        Média de entregas por atividade
+        Número de entregas por atividade
       </Menu.Item>
     </Menu>
   );
@@ -119,10 +260,13 @@ export const Dashboard = () => {
   const [currentItem, setCurrentItem] = React.useState<string>("heatmap");
 
   const getCurrentItemComponent = () => {
-    if (currentItem === 'heatmap') {
-      return <DeliveryHeatmapPlot />;
-    }
-    return null;
+    const map = new Map<string, JSX.Element>([
+      ['heatmap', <DeliveryHeatmapPlot />],
+      ['deliveries_student', <DeliveryStudentNumberPlot />],
+      ['histogram', <DeliveryHistogramPlot />],
+      ['deliveries_activity', <DeliveryActivityNumberPlot />],
+    ]);
+    return map.get(currentItem);
   };
 
   return (
