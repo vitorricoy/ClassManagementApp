@@ -1,12 +1,13 @@
 import React from "react";
 import "./Dashboard.css";
 import { NavigationMenu } from "../../NavigationMenu/NavigationMenu";
-import Plot from 'react-plotly.js';
+import Plot from "react-plotly.js";
 import { Menu, Spin } from "antd";
 import { ApprovalProbability, getProbability } from "../../../api/approval";
 
 const ApprovalProbabilityPlot = () => {
-  const [probabilityData, setProbabilityData] = React.useState<ApprovalProbability[]>();
+  const [probabilityData, setProbabilityData] =
+    React.useState<ApprovalProbability[]>();
 
   React.useEffect(() => {
     if (!probabilityData) {
@@ -19,32 +20,39 @@ const ApprovalProbabilityPlot = () => {
   });
 
   const getPlot = () => {
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: probabilityData?.map(v => v.email),
-          y: probabilityData?.map(v => v.probability.toPrecision(2)),
-          type: 'bar',
-        },
-      ]}
-      layout={{
-        title: 'Probabilidade de aprovação por aluno',
-        margin: {
-          t: 50,
-          b: 250,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 100,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: probabilityData?.map((v) => v.email),
+            y: probabilityData?.map((v) => v.probability.toPrecision(2)),
+            type: "bar",
+          },
+        ]}
+        layout={{
+          title: "Probabilidade de aprovação por aluno",
+          margin: {
+            t: 50,
+            b: 250,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 100,
+        }}
+      />
+    );
   };
 
-  return probabilityData ? getPlot() : <div className="spinner"><Spin /></div>;
+  return probabilityData ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
 const ApprovalHistogramPlot = () => {
@@ -54,7 +62,9 @@ const ApprovalHistogramPlot = () => {
     if (!probabilityData) {
       getProbability().then((data) => {
         if (data) {
-          setProbabilityData(data.map(v => Math.round(v.probability * 1000) / 1000));
+          setProbabilityData(
+            data.map((v) => Math.round(v.probability * 1000) / 1000)
+          );
         }
       });
     }
@@ -62,46 +72,59 @@ const ApprovalHistogramPlot = () => {
 
   const getPlot = () => {
     const maxRepetition = probabilityData ? Math.max(...probabilityData) : 0;
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: probabilityData,
-          type: 'histogram',
-          xbins: {
-            start: 0,
-            end: maxRepetition,
-            size: 5,
-          }
-        },
-      ]}
-      layout={{
-        title: 'Histograma da ptobabilidade de completar o curso por aluno',
-        bargap: 0.1,
-        margin: {
-          t: 50,
-          b: 50,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        xaxis: {
-          nticks: maxRepetition,
-          tick0: 0,
-          dtick: 5,
-          tickformat: ".2f",
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 200,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: probabilityData,
+            type: "histogram",
+            xbins: {
+              start: 0,
+              end: maxRepetition,
+              size: 5,
+            },
+          },
+        ]}
+        layout={{
+          title: "Histograma da ptobabilidade de completar o curso por aluno",
+          bargap: 0.1,
+          margin: {
+            t: 50,
+            b: 50,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          xaxis: {
+            nticks: maxRepetition,
+            tick0: 0,
+            dtick: 5,
+            tickformat: ".2f",
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 200,
+        }}
+      />
+    );
   };
 
-  return probabilityData ? getPlot() : <div className="spinner"><Spin /></div>;
+  return probabilityData ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
-const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: string; setCurrentItem: (v: string) => void; }) => {
+const DashboardPlotMenu = ({
+  currentItem,
+  setCurrentItem,
+}: {
+  currentItem: string;
+  setCurrentItem: (v: string) => void;
+}) => {
   return (
     <Menu
       selectedKeys={[currentItem]}
@@ -109,14 +132,10 @@ const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: strin
       mode="horizontal"
       className="menu"
     >
-      <Menu.Item
-        key="probability"
-      >
+      <Menu.Item key="probability">
         Probabilidade de completar o curso por aluno
       </Menu.Item>
-      <Menu.Item
-        key="histogram"
-      >
+      <Menu.Item key="histogram">
         Histograma da probabilidade de completar o curso por aluno
       </Menu.Item>
     </Menu>
@@ -128,8 +147,8 @@ export const Dashboard = () => {
 
   const getCurrentItemComponent = () => {
     const map = new Map<string, JSX.Element>([
-      ['probability', <ApprovalProbabilityPlot />],
-      ['histogram', <ApprovalHistogramPlot />],
+      ["probability", <ApprovalProbabilityPlot />],
+      ["histogram", <ApprovalHistogramPlot />],
     ]);
     return map.get(currentItem);
   };
@@ -137,7 +156,10 @@ export const Dashboard = () => {
   return (
     <div>
       <NavigationMenu />
-      <DashboardPlotMenu currentItem={currentItem} setCurrentItem={setCurrentItem} />
+      <DashboardPlotMenu
+        currentItem={currentItem}
+        setCurrentItem={setCurrentItem}
+      />
       {getCurrentItemComponent()}
     </div>
   );

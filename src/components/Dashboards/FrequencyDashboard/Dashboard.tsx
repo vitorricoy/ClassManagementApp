@@ -1,19 +1,29 @@
 import React from "react";
 import "./Dashboard.css";
 import { NavigationMenu } from "../../NavigationMenu/NavigationMenu";
-import Plot from 'react-plotly.js';
+import Plot from "react-plotly.js";
 import { Menu, Spin } from "antd";
-import { FrequencyHeatmap, FrequencyStudentMean, FrequencyWeekMean, getFrequencyHeatmap, getFrequencyStudentMean, getFrequencyWeekMean } from "../../../api/frequency";
+import {
+  FrequencyHeatmap,
+  FrequencyStudentMean,
+  FrequencyWeekMean,
+  getFrequencyHeatmap,
+  getFrequencyStudentMean,
+  getFrequencyWeekMean,
+} from "../../../api/frequency";
 
 const getDateFromString = (str: string) => {
   var parts = str.split("/");
-  return new Date(parseInt(parts[2], 10),
+  return new Date(
+    parseInt(parts[2], 10),
     parseInt(parts[1], 10) - 1,
-    parseInt(parts[0], 10));
+    parseInt(parts[0], 10)
+  );
 };
 
 const FrequencyHeatmapPlot = () => {
-  const [frequencyHeatmapData, setFrequencyHeatmapData] = React.useState<FrequencyHeatmap>();
+  const [frequencyHeatmapData, setFrequencyHeatmapData] =
+    React.useState<FrequencyHeatmap>();
 
   React.useEffect(() => {
     if (!frequencyHeatmapData) {
@@ -26,25 +36,35 @@ const FrequencyHeatmapPlot = () => {
   });
 
   const getEmails = () => {
-    const emails = frequencyHeatmapData ? Object.keys(frequencyHeatmapData) : [];
-    const emailsCont: [string, number][] = emails.map(email => {
-      const entries = frequencyHeatmapData ? Object.entries(frequencyHeatmapData[email]) : [];
-      const delivereds: number[] = entries.map(e => e[1]);
+    const emails = frequencyHeatmapData
+      ? Object.keys(frequencyHeatmapData)
+      : [];
+    const emailsCont: [string, number][] = emails.map((email) => {
+      const entries = frequencyHeatmapData
+        ? Object.entries(frequencyHeatmapData[email])
+        : [];
+      const delivereds: number[] = entries.map((e) => e[1]);
       const cont = delivereds.reduce((acc, v) => acc + v, 0);
       return [email, cont];
-    })
+    });
 
-    return emailsCont.sort((a, b) => a[1] - b[1]).map(v => v[0]);
+    return emailsCont.sort((a, b) => a[1] - b[1]).map((v) => v[0]);
   };
   const getWeeks = () => {
-    const week = frequencyHeatmapData ? Object.keys(frequencyHeatmapData[getEmails()[0]]) : []
-    return week.sort((a, b) => getDateFromString(a).getTime() - getDateFromString(b).getTime());
+    const week = frequencyHeatmapData
+      ? Object.keys(frequencyHeatmapData[getEmails()[0]])
+      : [];
+    return week.sort(
+      (a, b) => getDateFromString(a).getTime() - getDateFromString(b).getTime()
+    );
   };
 
   const getZValue = () => {
     const emails = getEmails();
     const weeks = getWeeks();
-    const zValue: number[][] = new Array(emails.length).fill(0).map((o, i) => new Array(weeks.length).fill(0));
+    const zValue: number[][] = new Array(emails.length)
+      .fill(0)
+      .map((o, i) => new Array(weeks.length).fill(0));
 
     if (!frequencyHeatmapData) {
       return;
@@ -62,7 +82,7 @@ const FrequencyHeatmapPlot = () => {
   const getPlot = () => {
     const layout = {
       annotations: [],
-      title: 'Entradas na página do curso por aluno e por semana',
+      title: "Entradas na página do curso por aluno e por semana",
       margin: {
         t: 50,
         b: 70,
@@ -72,7 +92,10 @@ const FrequencyHeatmapPlot = () => {
       },
       width: window.innerWidth - 20,
       height: getEmails().length * 20,
-    } as Pick<Plotly.Layout, 'annotations' | 'title' | 'margin' | 'width' | 'height'>;
+    } as Pick<
+      Plotly.Layout,
+      "annotations" | "title" | "margin" | "width" | "height"
+    >;
 
     const xValues = getWeeks();
     const yValues = getEmails();
@@ -82,43 +105,52 @@ const FrequencyHeatmapPlot = () => {
         for (let j = 0; j < xValues.length; j++) {
           const currentValue = zValues[i][j];
           layout.annotations.push({
-            xref: 'x',
-            yref: 'y',
+            xref: "x",
+            yref: "y",
             x: xValues[j],
             y: yValues[i],
             text: currentValue.toString(),
             font: {
-              family: 'Arial',
+              family: "Arial",
               size: 12,
-              color: currentValue >= 70 ? 'black' : 'white',
+              color: currentValue >= 70 ? "black" : "white",
             },
             showarrow: false,
           });
         }
       }
     }
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: xValues,
-          y: yValues,
-          z: zValues,
-          xgap: 1,
-          ygap: 1,
-          type: 'heatmap',
-          colorscale: 'YlGnBu',
-        },
-      ]}
-      layout={layout}
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: xValues,
+            y: yValues,
+            z: zValues,
+            xgap: 1,
+            ygap: 1,
+            type: "heatmap",
+            colorscale: "YlGnBu",
+          },
+        ]}
+        layout={layout}
+      />
+    );
   };
 
-  return frequencyHeatmapData ? getPlot() : <div className="spinner"><Spin /></div>;
+  return frequencyHeatmapData ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
 const FrequencyStudentMeanPlot = () => {
-  const [frequencyCount, setFrequencyCount] = React.useState<FrequencyStudentMean[]>();
+  const [frequencyCount, setFrequencyCount] =
+    React.useState<FrequencyStudentMean[]>();
 
   React.useEffect(() => {
     if (!frequencyCount) {
@@ -131,32 +163,39 @@ const FrequencyStudentMeanPlot = () => {
   });
 
   const getPlot = () => {
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: frequencyCount?.map(v => v.email),
-          y: frequencyCount?.map(v => v.frequency.toPrecision(2)),
-          type: 'bar',
-        },
-      ]}
-      layout={{
-        title: 'Média de acessos do aluno por semana',
-        margin: {
-          t: 50,
-          b: 250,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 100,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: frequencyCount?.map((v) => v.email),
+            y: frequencyCount?.map((v) => v.frequency.toPrecision(2)),
+            type: "bar",
+          },
+        ]}
+        layout={{
+          title: "Média de acessos do aluno por semana",
+          margin: {
+            t: 50,
+            b: 250,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 100,
+        }}
+      />
+    );
   };
 
-  return frequencyCount ? getPlot() : <div className="spinner"><Spin /></div>;
+  return frequencyCount ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
 const FrequencyStudentHistogramPlot = () => {
@@ -166,7 +205,7 @@ const FrequencyStudentHistogramPlot = () => {
     if (!frequencyCount) {
       getFrequencyStudentMean().then((data) => {
         if (data) {
-          setFrequencyCount(data.map(v => v.frequency));
+          setFrequencyCount(data.map((v) => v.frequency));
         }
       });
     }
@@ -174,47 +213,55 @@ const FrequencyStudentHistogramPlot = () => {
 
   const getPlot = () => {
     const maxDelivery = frequencyCount ? Math.max(...frequencyCount) : 0;
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: frequencyCount,
-          type: 'histogram',
-          xbins: {
-            start: 0,
-            end: maxDelivery,
-            size: 2,
-          }
-        },
-      ]}
-      layout={{
-        title: 'Histograma da frequência média de entrada no curso por aluno',
-        bargap: 0.1,
-        margin: {
-          t: 50,
-          b: 50,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        xaxis: {
-          nticks: maxDelivery,
-          tick0: 0,
-          dtick: 2,
-          tickformat: "d",
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 200,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: frequencyCount,
+            type: "histogram",
+            xbins: {
+              start: 0,
+              end: maxDelivery,
+              size: 2,
+            },
+          },
+        ]}
+        layout={{
+          title: "Histograma da frequência média de entrada no curso por aluno",
+          bargap: 0.1,
+          margin: {
+            t: 50,
+            b: 50,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          xaxis: {
+            nticks: maxDelivery,
+            tick0: 0,
+            dtick: 2,
+            tickformat: "d",
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 200,
+        }}
+      />
+    );
   };
 
-  return frequencyCount ? getPlot() : <div className="spinner"><Spin /></div>;
+  return frequencyCount ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
 const FrequencyWeekMeanPlot = () => {
-  const [frequencyCount, setFrequencyCount] = React.useState<FrequencyWeekMean[]>();
+  const [frequencyCount, setFrequencyCount] =
+    React.useState<FrequencyWeekMean[]>();
 
   React.useEffect(() => {
     if (!frequencyCount) {
@@ -227,32 +274,39 @@ const FrequencyWeekMeanPlot = () => {
   });
 
   const getPlot = () => {
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: frequencyCount?.map(v => v.week),
-          y: frequencyCount?.map(v => v.frequency.toPrecision(2)),
-          type: 'bar',
-        },
-      ]}
-      layout={{
-        title: 'Média de acessos dos alunos ao curso por semana',
-        margin: {
-          t: 50,
-          b: 250,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 100,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: frequencyCount?.map((v) => v.week),
+            y: frequencyCount?.map((v) => v.frequency.toPrecision(2)),
+            type: "bar",
+          },
+        ]}
+        layout={{
+          title: "Média de acessos dos alunos ao curso por semana",
+          margin: {
+            t: 50,
+            b: 250,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 100,
+        }}
+      />
+    );
   };
 
-  return frequencyCount ? getPlot() : <div className="spinner"><Spin /></div>;
+  return frequencyCount ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
 const FrequencyWeekHistogramPlot = () => {
@@ -262,7 +316,7 @@ const FrequencyWeekHistogramPlot = () => {
     if (!frequencyCount) {
       getFrequencyWeekMean().then((data) => {
         if (data) {
-          setFrequencyCount(data.map(v => v.frequency));
+          setFrequencyCount(data.map((v) => v.frequency));
         }
       });
     }
@@ -270,47 +324,59 @@ const FrequencyWeekHistogramPlot = () => {
 
   const getPlot = () => {
     const maxDelivery = frequencyCount ? Math.max(...frequencyCount) : 0;
-    return <Plot
-      style={{ paddingTop: '20px' }}
-      data={[
-        {
-          x: frequencyCount,
-          type: 'histogram',
-          xbins: {
-            start: 0,
-            end: maxDelivery,
-            size: 1,
-          }
-        },
-      ]}
-      layout={{
-        title: 'Histograma da frequência média de entrada no curso por aluno',
-        bargap: 0.1,
-        margin: {
-          t: 50,
-          b: 50,
-          l: 50,
-          r: 50,
-          pad: 0,
-        },
-        xaxis: {
-          nticks: maxDelivery,
-          tick0: 0,
-          dtick: 1,
-          tickformat: "d",
-        },
-        width: window.innerWidth - 20,
-        height: window.innerHeight - 200,
-      }
-      }
-    />
+    return (
+      <Plot
+        style={{ paddingTop: "20px" }}
+        data={[
+          {
+            x: frequencyCount,
+            type: "histogram",
+            xbins: {
+              start: 0,
+              end: maxDelivery,
+              size: 1,
+            },
+          },
+        ]}
+        layout={{
+          title: "Histograma da frequência média de entrada no curso por aluno",
+          bargap: 0.1,
+          margin: {
+            t: 50,
+            b: 50,
+            l: 50,
+            r: 50,
+            pad: 0,
+          },
+          xaxis: {
+            nticks: maxDelivery,
+            tick0: 0,
+            dtick: 1,
+            tickformat: "d",
+          },
+          width: window.innerWidth - 20,
+          height: window.innerHeight - 200,
+        }}
+      />
+    );
   };
 
-  return frequencyCount ? getPlot() : <div className="spinner"><Spin /></div>;
+  return frequencyCount ? (
+    getPlot()
+  ) : (
+    <div className="spinner">
+      <Spin />
+    </div>
+  );
 };
 
-
-const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: string; setCurrentItem: (v: string) => void; }) => {
+const DashboardPlotMenu = ({
+  currentItem,
+  setCurrentItem,
+}: {
+  currentItem: string;
+  setCurrentItem: (v: string) => void;
+}) => {
   return (
     <Menu
       selectedKeys={[currentItem]}
@@ -318,29 +384,19 @@ const DashboardPlotMenu = ({ currentItem, setCurrentItem }: { currentItem: strin
       mode="horizontal"
       className="menu"
     >
-      <Menu.Item
-        key="heatmap"
-      >
+      <Menu.Item key="heatmap">
         Entradas na página do curso por semana e aluno
       </Menu.Item>
-      <Menu.Item
-        key="student_frequency"
-      >
+      <Menu.Item key="student_frequency">
         Média de acessos ao curso por aluno
       </Menu.Item>
-      <Menu.Item
-        key="histogram_student"
-      >
+      <Menu.Item key="histogram_student">
         Histograma da média de entrada no curso por aluno
       </Menu.Item>
-      <Menu.Item
-        key="week_frequency"
-      >
+      <Menu.Item key="week_frequency">
         Média de acessos ao curso por semana
       </Menu.Item>
-      <Menu.Item
-        key="histogram_week"
-      >
+      <Menu.Item key="histogram_week">
         Histograma da média de entrada no curso por semana
       </Menu.Item>
     </Menu>
@@ -352,11 +408,11 @@ export const Dashboard = () => {
 
   const getCurrentItemComponent = () => {
     const map = new Map<string, JSX.Element>([
-      ['heatmap', <FrequencyHeatmapPlot />],
-      ['student_frequency', <FrequencyStudentMeanPlot />],
-      ['histogram_student', <FrequencyStudentHistogramPlot />],
-      ['week_frequency', <FrequencyWeekMeanPlot />],
-      ['histogram_week', <FrequencyWeekHistogramPlot />],
+      ["heatmap", <FrequencyHeatmapPlot />],
+      ["student_frequency", <FrequencyStudentMeanPlot />],
+      ["histogram_student", <FrequencyStudentHistogramPlot />],
+      ["week_frequency", <FrequencyWeekMeanPlot />],
+      ["histogram_week", <FrequencyWeekHistogramPlot />],
     ]);
     return map.get(currentItem);
   };
@@ -364,7 +420,10 @@ export const Dashboard = () => {
   return (
     <div>
       <NavigationMenu />
-      <DashboardPlotMenu currentItem={currentItem} setCurrentItem={setCurrentItem} />
+      <DashboardPlotMenu
+        currentItem={currentItem}
+        setCurrentItem={setCurrentItem}
+      />
       {getCurrentItemComponent()}
     </div>
   );
