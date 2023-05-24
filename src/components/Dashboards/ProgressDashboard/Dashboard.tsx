@@ -41,16 +41,18 @@ const ProgressMeanStudentPlot = () => {
         layout={{
           title:
             "Número médio de vezes que um material é repetido por aluno (dentre os materiais que ele viu ao menos uma vez)",
+          yaxis: { title: "Frequência" },
           margin: {
             t: 50,
             b: 250,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
           width: window.innerWidth - 20,
           height: window.innerHeight - 150,
           xaxis: {
+            title: { text: "Aluno", standoff: 0 },
             tickangle: 90,
           },
         }}
@@ -183,15 +185,19 @@ const ProgressHistogramStudentPlot = () => {
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
           xaxis: {
+            title: "Frequência",
             nticks: maxRepetition,
             tick0: 1,
             dtick: 0.25,
             tickformat: ".2f",
+          },
+          yaxis: {
+            title: "Número de alunos",
           },
           width: window.innerWidth - 20,
           height: window.innerHeight - 200,
@@ -315,11 +321,15 @@ const ProgressHistogramMaterialPlot = () => {
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: {
+            title: "Número de materiais",
+          },
           xaxis: {
+            title: "Frequência média",
             nticks: maxRepetition,
             tick0: 1,
             dtick: 0.2,

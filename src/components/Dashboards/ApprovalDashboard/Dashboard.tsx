@@ -34,13 +34,15 @@ const ApprovalProbabilityPlot = () => {
           title: "Probabilidade de aprovação por aluno",
           margin: {
             t: 50,
-            b: 250,
-            l: 50,
+            b: 300,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: { title: "Probabilidade de aprovação (%)" },
+          xaxis: { title: { text: "Aluno", standoff: 0 } },
           width: window.innerWidth - 20,
-          height: window.innerHeight - 100,
+          height: window.innerHeight - 120,
         }}
       />
     );
@@ -92,11 +94,13 @@ const ApprovalHistogramPlot = () => {
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: { title: "Número de alunos" },
           xaxis: {
+            title: "Probabilidade de aprovação",
             nticks: maxRepetition,
             tick0: 0,
             dtick: 5,

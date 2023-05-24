@@ -108,6 +108,7 @@ const ModuleHeatmapPlot = () => {
             ygap: 1,
             type: "heatmap",
             colorscale: "YlGnBu",
+            colorbar: { title: "Conclusão do curso (%)", titleside: "right" },
           },
         ]}
         layout={layout}
@@ -169,14 +170,16 @@ const ModuleConclusionPlot = () => {
           },
         ]}
         layout={{
-          title: "Percentual completo do módulo " + module,
+          title: "Percentual completo do módulo '" + module + "'",
           margin: {
             t: 50,
-            b: 250,
-            l: 50,
+            b: 300,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          xaxis: { title: { text: "Aluno", standoff: 10 } },
+          yaxis: { title: "Percentual completo (%)" },
           width: window.innerWidth - 20,
           height: window.innerHeight - 200,
         }}

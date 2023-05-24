@@ -113,6 +113,7 @@ const GradeHeatmapPlot = () => {
             ygap: 1,
             type: "heatmap",
             colorscale: "YlGnBu",
+            colorbar: { title: "Nota do aluno", titleside: "right" },
           },
         ]}
         layout={layout}
@@ -158,10 +159,12 @@ const GradeStudentPlot = () => {
           margin: {
             t: 50,
             b: 250,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          xaxis: { title: { text: "Aluno", standoff: 0 } },
+          yaxis: { title: "Nota (%)" },
           width: window.innerWidth - 20,
           height: window.innerHeight - 200,
         }}
@@ -208,16 +211,18 @@ const GradeHistogramPlot = () => {
           },
         ]}
         layout={{
-          title: "Histograma da média de entregas por aluno",
+          title: "Histograma da nota percentual média por aluno",
           bargap: 0.01,
           margin: {
             t: 50,
-            b: 20,
-            l: 50,
+            b: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: { title: "Número de alunos" },
           xaxis: {
+            title: "Nota percentual média (%)",
             nticks: maxDelivery,
             tick0: 0,
             dtick: 5,
@@ -302,8 +307,8 @@ const GradeParetoPlot = () => {
           title: "Pareto das notas (" + material + ")",
           margin: {
             t: 50,
-            b: 250,
-            l: 50,
+            b: 300,
+            l: 80,
             r: 50,
             pad: 0,
           },
@@ -311,7 +316,9 @@ const GradeParetoPlot = () => {
           height: window.innerHeight - 150,
           xaxis: {
             tickangle: 90,
+            title: { text: "Aluno", standoff: 0 },
           },
+          yaxis: { title: "Nota (%) / Porcentagem acumulada (%)" },
         }}
       />
     );

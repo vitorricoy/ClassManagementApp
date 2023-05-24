@@ -132,6 +132,7 @@ const FrequencyHeatmapPlot = () => {
             ygap: 1,
             type: "heatmap",
             colorscale: "YlGnBu",
+            colorbar: { title: "Número de entradas", titleside: "right" },
           },
         ]}
         layout={layout}
@@ -174,16 +175,18 @@ const FrequencyStudentMeanPlot = () => {
           },
         ]}
         layout={{
-          title: "Média de acessos do aluno por semana",
+          title: "Média de acessos do aluno ao curso por semana",
           margin: {
             t: 50,
-            b: 250,
-            l: 50,
+            b: 280,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          xaxis: { title: { text: "Aluno", standoff: 0 } },
+          yaxis: { title: "Número médio de acessos" },
           width: window.innerWidth - 20,
-          height: window.innerHeight - 100,
+          height: window.innerHeight - 120,
         }}
       />
     );
@@ -233,11 +236,13 @@ const FrequencyStudentHistogramPlot = () => {
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: { title: "Número de alunos" },
           xaxis: {
+            title: "Frequência média de entrada",
             nticks: maxDelivery,
             tick0: 0,
             dtick: 2,
@@ -289,10 +294,12 @@ const FrequencyWeekMeanPlot = () => {
           margin: {
             t: 50,
             b: 250,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          xaxis: { title: "Semana" },
+          yaxis: { title: "Número médio de entradas" },
           width: window.innerWidth - 20,
           height: window.innerHeight - 100,
         }}
@@ -339,16 +346,19 @@ const FrequencyWeekHistogramPlot = () => {
           },
         ]}
         layout={{
-          title: "Histograma da frequência média de entrada no curso por aluno",
+          title:
+            "Histograma da frequência média de entrada no curso por semana",
           bargap: 0.1,
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          yaxis: { title: "Número de semanas" },
           xaxis: {
+            title: "Frequência média de entrada",
             nticks: maxDelivery,
             tick0: 0,
             dtick: 1,

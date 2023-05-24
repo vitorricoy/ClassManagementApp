@@ -79,6 +79,10 @@ const DeliveryHeatmapPlot = () => {
               [0.0, "rgb(0,0,131)"],
               [1.0, "rgb(128,0,0)"],
             ],
+            colorbar: {
+              title: "Entregue = 1 / Não entregue = 0",
+              titleside: "right",
+            },
           },
         ]}
         layout={{
@@ -136,10 +140,12 @@ const DeliveryStudentNumberPlot = () => {
           margin: {
             t: 50,
             b: 250,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
+          xaxis: { title: { text: "Aluno", standoff: 0 } },
+          yaxis: { title: "Número de entregas" },
           width: window.innerWidth - 20,
           height: window.innerHeight - 200,
         }}
@@ -194,7 +200,7 @@ const DeliveryHistogramPlot = () => {
           margin: {
             t: 50,
             b: 50,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
@@ -203,7 +209,9 @@ const DeliveryHistogramPlot = () => {
             tick0: 0.4999,
             dtick: 1,
             tickformat: "d",
+            title: "Número de entregas",
           },
+          yaxis: { title: "Número de alunos" },
           width: window.innerWidth - 20,
           height: window.innerHeight - 200,
         }}
@@ -250,7 +258,7 @@ const DeliveryActivityNumberPlot = () => {
           margin: {
             t: 50,
             b: 300,
-            l: 50,
+            l: 80,
             r: 50,
             pad: 0,
           },
@@ -258,7 +266,9 @@ const DeliveryActivityNumberPlot = () => {
           height: window.innerHeight - 150,
           xaxis: {
             tickangle: 90,
+            title: { text: "Atividade", standoff: 0 },
           },
+          yaxis: { title: "Número de alunos que entregaram a atividade" },
         }}
       />
     );
