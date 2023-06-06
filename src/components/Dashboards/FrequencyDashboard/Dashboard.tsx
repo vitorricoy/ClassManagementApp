@@ -113,7 +113,7 @@ const FrequencyHeatmapPlot = () => {
             font: {
               family: "Arial",
               size: 12,
-              color: currentValue >= 70 ? "black" : "white",
+              color: currentValue >= Math.log(70) ? "black" : "white",
             },
             showarrow: false,
           });
@@ -127,7 +127,9 @@ const FrequencyHeatmapPlot = () => {
           {
             x: xValues,
             y: yValues,
-            z: zValues,
+            z: zValues?.map((v) =>
+              v.map((v2) => (v2 === 0 ? 0 : Math.log(v2)))
+            ),
             xgap: 1,
             ygap: 1,
             type: "heatmap",

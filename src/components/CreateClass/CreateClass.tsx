@@ -1,7 +1,7 @@
 import React, { SetStateAction } from "react";
 import "./CreateClass.css";
 import { createClass, getClasses } from "../../api/class";
-import { Button, Form, Input, Upload } from "antd";
+import { Button, Form, Input, Modal, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import Papa from "papaparse";
@@ -124,9 +124,67 @@ export const CreateClass = () => {
     });
   };
 
+  const [visible, setVisible] = React.useState(false);
+
   return (
     <div>
       <h2>Cadastrar uma nova turma</h2>
+      <Button
+        style={{ marginBottom: "15px" }}
+        onClick={() => setVisible(true)}
+        type="link"
+      >
+        Como obter os dados?
+      </Button>
+      <Modal
+        title="Como obter os dados"
+        open={visible}
+        onCancel={() => setVisible(false)}
+        onOk={() => setVisible(false)}
+        cancelButtonProps={{ style: { display: "none" } }}
+      >
+        <h4>Dados de log</h4>
+        <ul>
+          <li>Acessar a turma no moodle</li>
+          <li>
+            Ir no ícone de engrenagem na parte superior da tela (Gerenciamento
+            do curso)
+          </li>
+          <li>Selecionar a opção "Logs" na coluna "Links do Usuário"</li>
+          <li>Clicar no botão "Obter estes logs"</li>
+          <li>
+            Ir para o fim da página e clicar em "Download", estando selecionada
+            a opção de baixar os dados da tabela como valores separados por
+            vírgulas (.csv)
+          </li>
+        </ul>
+        <h4>Dados de entregas</h4>
+        <ul>
+          <li>Acessar a turma no moodle</li>
+          <li>
+            Ir no ícone de engrenagem na parte superior da tela (Gerenciamento
+            do curso)
+          </li>
+          <li>
+            Selecionar a opção "Conclusão de atividade" na coluna "Links do
+            Usuário"
+          </li>
+          <li>
+            Clicar na opção "Download em formato de planilha (UTF-8. csv)" no
+            fim da página
+          </li>
+        </ul>
+        <h4>Dados de notas</h4>
+        <ul>
+          <li>Acessar a turma no moodle</li>
+          <li>Escolher o item "Notas" no menu lateral</li>
+          <li>Clicar na aba "Exportar"</li>
+          <li>Clicar na aba "Arquivo de texto"</li>
+          <li>
+            Deixar todas as opções selecionadas e clicar no botão "Download"
+          </li>
+        </ul>
+      </Modal>
       <Form className="login-form" onFinish={onFinish}>
         <Form.Item required name="name">
           <Input placeholder="Nome da turma" />

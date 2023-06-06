@@ -296,15 +296,9 @@ const GradeParetoPlot = () => {
             type: "bar",
             name: "Nota",
           },
-          {
-            x: emails,
-            y: cumSum,
-            type: "scatter",
-            name: "Porcentagem acumulada",
-          },
         ]}
         layout={{
-          title: "Pareto das notas (" + material + ")",
+          title: "Notas (" + material + ")",
           margin: {
             t: 50,
             b: 300,
@@ -318,7 +312,7 @@ const GradeParetoPlot = () => {
             tickangle: 90,
             title: { text: "Aluno", standoff: 0 },
           },
-          yaxis: { title: "Nota (%) / Porcentagem acumulada (%)" },
+          yaxis: { title: "Nota (%)" },
         }}
       />
     );
@@ -356,9 +350,7 @@ const DashboardPlotMenu = ({
       <Menu.Item key="histogram">
         Histograma da nota percentual por aluno
       </Menu.Item>
-      <Menu.Item key="pareto">
-        Pareto da nota dos alunos (por atividade)
-      </Menu.Item>
+      <Menu.Item key="pareto">Nota dos alunos (por atividade)</Menu.Item>
     </Menu>
   );
 };
