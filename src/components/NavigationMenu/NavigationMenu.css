@@ -15,6 +15,10 @@
   float: right;
 }
 
+.logout > span > button {
+  margin: 4px;
+}
+
 :where(.css-dev-only-do-not-override-yp8pcc).ant-menu-overflow {
   display: block;
 }

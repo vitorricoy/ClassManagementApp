@@ -68,7 +68,13 @@ export const NavigationMenu = () => {
         Estimativa de aprovação
       </Menu.Item>
       <Menu.Item className="logout" key="logout">
-        <Button type="link" size="small" onClick={() => navigate("/")}>
+        <Button type="default" onClick={() => navigate("/class/update")}>
+          Atualizar dados
+        </Button>
+        <Button type="default" onClick={() => navigate("/class/choose")}>
+          Mudar turma
+        </Button>
+        <Button type="default" danger onClick={() => navigate("/")}>
           Sair
         </Button>
       </Menu.Item>

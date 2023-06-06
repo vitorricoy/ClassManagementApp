@@ -11,6 +11,7 @@ import { ModulesDashboardPage } from "./pages/Dashboards/ModulesDashboardPage";
 import { ProgressDashboardPage } from "./pages/Dashboards/ProgressDashboardPage";
 import { FrequencyDashboardPage } from "./pages/Dashboards/FrequencyDashboardPage";
 import { ApprovalDashboardPage } from "./pages/Dashboards/ApprovalDashboardPage";
+import { UpdateClassPage } from "./pages/UpdateClassPage";
 
 function App() {
   const routes = useRoutes([
@@ -26,6 +27,7 @@ function App() {
     { path: "/dashboard/progress", element: <ProgressDashboardPage /> },
     { path: "/dashboard/frequency", element: <FrequencyDashboardPage /> },
     { path: "/dashboard/approval", element: <ApprovalDashboardPage /> },
+    { path: "/class/update", element: <UpdateClassPage /> },
   ]);
 
   return routes;
