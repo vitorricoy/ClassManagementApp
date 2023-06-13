@@ -1,23 +1,23 @@
 import React, { SetStateAction } from "react";
 import "./CreateClass.css";
-import { createClass, getClasses } from "../../api/class";
+import { createClass } from "../../api/class";
 import { Button, Form, Input, Modal, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { RcFile, UploadChangeParam, UploadFile } from "antd/es/upload";
 import Papa from "papaparse";
 import { useNavigate } from "react-router-dom";
 
-const logKeyMap = {
-  Componente: "component",
-  "Contexto do Evento": "context",
-  Descrição: "description",
-  Hora: "hour",
-  "Nome completo": "fullName",
-  "Nome do evento": "eventName",
-  Origem: "origin",
-  "Usuário afetado": "affectedUser",
-  "endereço IP": "ipAddress",
-};
+// const logKeyMap = {
+//   Componente: "component",
+//   "Contexto do Evento": "context",
+//   Descrição: "description",
+//   Hora: "hour",
+//   "Nome completo": "fullName",
+//   "Nome do evento": "eventName",
+//   Origem: "origin",
+//   "Usuário afetado": "affectedUser",
+//   "endereço IP": "ipAddress",
+// };
 
 const gradeKeyMap = {
   "Endereço de email": "email",
@@ -48,8 +48,8 @@ type FormFields = {
 export const CreateClass = () => {
   const [loading, setLoading] = React.useState(false);
 
-  const [materials, setDeliveryData] = React.useState<string[]>([]);
-  const [names, setGradeData] = React.useState<string[]>([]);
+  const [, setDeliveryData] = React.useState<string[]>([]);
+  const [, setGradeData] = React.useState<string[]>([]);
 
   const beforeUpload =
     (setFn: SetStateAction<any>, type: "log" | "delivery" | "grade") =>

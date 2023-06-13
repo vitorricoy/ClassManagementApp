@@ -36,8 +36,8 @@ type FormFields = {
 export const UpdateClass = () => {
   const [loading, setLoading] = React.useState(false);
 
-  const [materials, setDeliveryData] = React.useState<string[]>([]);
-  const [names, setGradeData] = React.useState<string[]>([]);
+  const [, setDeliveryData] = React.useState<string[]>([]);
+  const [, setGradeData] = React.useState<string[]>([]);
 
   const beforeUpload =
     (setFn: SetStateAction<any>, type: "log" | "delivery" | "grade") =>
