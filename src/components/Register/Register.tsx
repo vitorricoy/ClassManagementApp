@@ -14,9 +14,13 @@ type FormFields = {
 export const Register = () => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = React.useState(false);
+
   const handleSubmit = (values: FormFields) => {
+    setLoading(true);
     createUser(values.email, values.name, values.password).then((token) => {
       if (token) {
+        setLoading(false);
         localStorage.setItem("userToken", token);
         navigate("/class/choose");
       }
@@ -54,6 +58,7 @@ export const Register = () => {
             type="primary"
             htmlType="submit"
             className="register-form-button"
+            loading={loading}
           >
             Entrar
           </Button>

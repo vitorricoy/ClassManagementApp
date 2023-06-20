@@ -13,9 +13,13 @@ type FormFields = {
 export const Login = () => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = React.useState(false);
+
   const handleSubmit = (values: FormFields) => {
+    setLoading(true);
     login(values.email, values.password).then((token) => {
       if (token) {
+        setLoading(false);
         localStorage.setItem("userToken", token);
         navigate("/class/choose");
       }
@@ -47,6 +51,7 @@ export const Login = () => {
             type="primary"
             htmlType="submit"
             className="login-form-button"
+            loading={loading}
           >
             Entrar
           </Button>
