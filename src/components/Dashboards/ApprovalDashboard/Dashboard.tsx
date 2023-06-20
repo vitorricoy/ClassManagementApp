@@ -89,7 +89,7 @@ const ApprovalHistogramPlot = () => {
           },
         ]}
         layout={{
-          title: "Histograma da ptobabilidade de completar o curso por aluno",
+          title: "Histograma da probabilidade de completar o curso por aluno",
           bargap: 0.1,
           margin: {
             t: 50,
